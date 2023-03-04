@@ -3,7 +3,9 @@ import * as React from 'react';
 let thingsToDo = ["Play a game!", "Watch a movie!", 
                   "Read a book!", "Take a walk!"];
 
-let i = 0;
+const ANIMATION_ITERATION_COUNT = 10;
+
+let animationIterationNumber = 0;
 const App = () => {
   const initialText = "Click the button to delegate this decision to our program";
   const [currentToDo, setCurrentToDo] = React.useState(initialText);
@@ -11,21 +13,18 @@ const App = () => {
   React.useEffect(() => {
     if (animationStartStatus) {
       const intervalId = setInterval(() => {
-        i++;
-        if (i === 10) {
-          i = 0;
-          
-          setAnimationStartStatus(false);
-          clearInterval(intervalId);
+        const animationObject = {
+          intervalId: intervalId,
+          currentToDo: currentToDo,
+          setCurrentToDo: setCurrentToDo,
+          setAnimationStartStatus: setAnimationStartStatus
         }
-        const toDo = getNextNonrepetitiveToDo(currentToDo);
-        setCurrentToDo(toDo);
+        startAnimation(animationObject);
       }, 1000);
 
       return () => clearInterval(intervalId);
     }
   });
-
 
   return (
     <div>
@@ -43,6 +42,22 @@ const App = () => {
     </div> 
   ); 
 }
+
+const startAnimation = (animationObject) => {
+  animationIterationNumber++;
+  if (animationIterationNumber === ANIMATION_ITERATION_COUNT) {
+    stopAnimation(animationObject.setAnimationStartStatus, animationObject.intervalId);
+  }
+  const toDo = getNextNonrepetitiveToDo(animationObject.currentToDo);
+  animationObject.setCurrentToDo(toDo);
+}
+
+const stopAnimation = (setAnimationStartStatus, intervalId) => {
+  animationIterationNumber = 0;
+  setAnimationStartStatus(false);
+  clearInterval(intervalId);
+}
+
 
 const getNextNonrepetitiveToDo = (currentToDo) => {
   const randomNumber = Math.floor(Math.random() * thingsToDo.length);

@@ -23,15 +23,19 @@ const App = () => {
       </ol>
 
       <p>{currentToDo}</p>
-      <button id="whatToDoButton" onClick={() => startAnimation(currentToDo, setCurrentToDo)}>What to Do</button>
+      <button id="whatToDoButton" onClick={() => handleWhatToDoButtonOnClickEvent(currentToDo, setCurrentToDo)}>What to Do</button>
     </div> 
   ); 
+}
+
+const handleWhatToDoButtonOnClickEvent = (currentToDo, setCurrentToDo) => {
+  startAnimation(currentToDo, setCurrentToDo);
 }
 
 
 const startAnimation = (currentToDo, setCurrentToDo) => {
   setTimeout(() => {
-    animationIterateIndex++;
+    increaseIterationNumberByOne();
     if (isIterationCompleted === true) {
       return;
     }
@@ -39,6 +43,10 @@ const startAnimation = (currentToDo, setCurrentToDo) => {
     setCurrentToDo(nextToDo);
     startAnimation(currentToDo, setCurrentToDo);
   }, 1000);
+}
+
+const increaseIterationNumberByOne = () => {
+  animationIterateIndex++;
 }
 
 

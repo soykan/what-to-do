@@ -10,19 +10,24 @@ const App = () => {
   const initialText = "Click the button to delegate this decision to our program";
   const [currentToDo, setCurrentToDo] = React.useState(initialText);
   const [animationStartStatus, setAnimationStartStatus] = React.useState(false);
+
   React.useEffect(() => {
     if (animationStartStatus) {
+
       const intervalId = setInterval(() => {
+
         const animationObject = {
-          intervalId: intervalId,
-          currentToDo: currentToDo,
-          setCurrentToDo: setCurrentToDo,
-          setAnimationStartStatus: setAnimationStartStatus
+          currentToDo,
+          setCurrentToDo,
+          setAnimationStartStatus
         }
+
         startAnimation(animationObject);
+
       }, 1000);
 
       return () => clearInterval(intervalId);
+
     }
   });
 
@@ -43,19 +48,26 @@ const App = () => {
   ); 
 }
 
+
 const startAnimation = (animationObject) => {
+  const {currentToDo, setCurrentToDo, setAnimationStartStatus} = animationObject;
   animationIterationNumber++;
   if (animationIterationNumber === ANIMATION_ITERATION_COUNT) {
-    stopAnimation(animationObject.setAnimationStartStatus, animationObject.intervalId);
+    stopAnimation(setAnimationStartStatus);
   }
-  const toDo = getNextNonrepetitiveToDo(animationObject.currentToDo);
-  animationObject.setCurrentToDo(toDo);
+  setNextWhatToDo(currentToDo, setCurrentToDo);
 }
 
-const stopAnimation = (setAnimationStartStatus, intervalId) => {
+
+const setNextWhatToDo = (currentToDo, setCurrentToDo) => {
+  const toDo = getNextNonrepetitiveToDo(currentToDo);
+  setCurrentToDo(toDo);
+}
+
+
+const stopAnimation = (setAnimationStartStatus) => {
   animationIterationNumber = 0;
   setAnimationStartStatus(false);
-  clearInterval(intervalId);
 }
 
 

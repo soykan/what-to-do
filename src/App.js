@@ -14,8 +14,6 @@ const App = () => {
 
       <h1>What to Do App</h1>
 
-      <ThingsToDo />
-
       <WhatToDo />
 
     </div> 
@@ -27,6 +25,10 @@ const WhatToDo = () => {
   const [currentToDo, setCurrentToDo] = React.useState(initialText);
   const [animationStartStatus, setAnimationStartStatus] = React.useState(false);
   const [whatToDoButtonDisabledStatus, setWhatToDoButtonDisabledStatus] = React.useState(false);
+  const [
+    removeButtonForListItemDisabledStatus, 
+    setRemoveButtonForListItemDisabledStatus
+  ] = React.useState(false);
 
   React.useEffect(() => {
     let intervalId;
@@ -36,7 +38,8 @@ const WhatToDo = () => {
           currentToDo,
           setCurrentToDo,
           setAnimationStartStatus,
-          setWhatToDoButtonDisabledStatus
+          setWhatToDoButtonDisabledStatus,
+          setRemoveButtonForListItemDisabledStatus
         }
         startAnimation(animationObject);
       }, 1000);
@@ -47,11 +50,15 @@ const WhatToDo = () => {
     }     
   } else {
     enableWhatToDoButton(setWhatToDoButtonDisabledStatus);
+    enableRemoveButtons(setRemoveButtonForListItemDisabledStatus);
   }
   }, [animationStartStatus, currentToDo]);
 
+
+
   return (
     <div>
+      <ThingsToDo disabled={removeButtonForListItemDisabledStatus} />
       <p>{currentToDo}</p>
       <button id="whatToDoButton" onClick={() => setAnimationStartStatus(true)} disabled={whatToDoButtonDisabledStatus}>
         What to Do
@@ -60,13 +67,25 @@ const WhatToDo = () => {
   )
 }
 
-const ThingsToDo = () => (
-  <ol>
-    {thingsToDo.map((item) => {
-      return <li>{item}</li>;
-    })}
-  </ol>
-)
+const ThingsToDo = (props) => {
+  return (
+    <div>
+      <ol>
+        {thingsToDo.map((item) => {
+          return (
+            <div>
+              <li>
+                {item + " "}
+                <button id="remoteButtonForListItem" disabled={props.disabled}>X</button>
+              </li>
+            </div>
+          );
+        })}
+      </ol>
+    </div>
+  )
+}
+
 
 const disableWhatToDoButton = (setWhatToDoButtonDisabledStatus) => {
   setWhatToDoButtonDisabledStatus(true);
@@ -77,7 +96,19 @@ const enableWhatToDoButton = (setWhatToDoButtonDisabledStatus) => {
   setWhatToDoButtonDisabledStatus(false);
 }
 
+
+const disableRemoveButtons = (setRemoveButtonForListItemDisabledStatus) => {
+  setRemoveButtonForListItemDisabledStatus(true);
+}
+
+
+const enableRemoveButtons = (setRemoveButtonForListItemDisabledStatus) => {
+  setRemoveButtonForListItemDisabledStatus(false);
+}
+
+
 const startAnimation = (animationObject) => {
+  disableRemoveButtons(animationObject.setRemoveButtonForListItemDisabledStatus);
   disableWhatToDoButton(animationObject.setWhatToDoButtonDisabledStatus);
   const {currentToDo, setCurrentToDo, setAnimationStartStatus} = animationObject;
   animationIterationNumber++;

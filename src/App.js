@@ -8,6 +8,7 @@ const ANIMATION_ITERATION_COUNT = 10;
 let animationIterationNumber = 0;
 
 
+
 const App = () => {
   return (
     <div>
@@ -15,6 +16,8 @@ const App = () => {
       <h1>What to Do App</h1>
 
       <WhatToDo />
+
+      <br/>
 
     </div> 
   ); 
@@ -58,7 +61,7 @@ const WhatToDo = () => {
 
   return (
     <div>
-      <ThingsToDo removeButtonsDisabledStatus={removeButtonForListItemDisabledStatus} />
+      <ThingsToDo removeButtonsDisabledStatus={removeButtonForListItemDisabledStatus} animationStatus={animationStartStatus} />
       <p>{currentToDo}</p>
       <button id="whatToDoButton" onClick={() => setAnimationStartStatus(true)} disabled={whatToDoButtonDisabledStatus}>
         What to Do
@@ -67,7 +70,17 @@ const WhatToDo = () => {
   )
 }
 
-const ThingsToDo = (props) =>  (
+const ThingsToDo = (props) => {
+  const [thingsToDoArray, setThingsToDoArray] = React.useState(thingsToDo);
+
+  const removeThingToDo = (listItemToRemove) => {
+    thingsToDo = thingsToDo.filter((item) => {
+      return item !== listItemToRemove;
+    });
+    setThingsToDoArray(thingsToDo);
+  }
+
+  return  (
     <div>
       <ol>
         {thingsToDo.map((item) => {
@@ -75,14 +88,47 @@ const ThingsToDo = (props) =>  (
             <div>
               <li>
                 {item + " "}
-                <button id="remoteButtonForListItem" disabled={props.removeButtonsDisabledStatus}>X</button>
+                <button id="removeButtonForListItem" disabled={props.removeButtonsDisabledStatus} onClick={() => removeThingToDo(item)}>
+                  X
+                </button>
               </li>
             </div>
           );
         })}
       </ol>
+      <br/>
+      <NewThingsForm addThingToThingsToDoArray={setThingsToDoArray} animationStatus={props.animationStatus} />
     </div>
-)
+  );
+}
+const NewThingsForm = (props) => {
+
+  const [addNewThingButtonDisabilityStatus, setAddNewThingButtonDisabilityStatus] = React.useState(false);
+
+  const handleSubmit = (event) => {
+    const newThingToDo = event.target.newThing.value;
+    event.preventDefault();
+    thingsToDo.push(newThingToDo);
+    props.addThingToThingsToDoArray(newThingToDo);
+  }
+
+  React.useEffect(() => {
+    if (props.animationStatus) {
+      setAddNewThingButtonDisabilityStatus(true);
+    } else {
+      setAddNewThingButtonDisabilityStatus(false);
+    }
+  }, [props.animationStatus]);
+
+  return (
+    <div>
+      <form onSubmit={handleSubmit}>  
+        <input type="text" name="newThing" placeholder="ToDo" />
+        <input type="submit" id="addNewThingButton" value="Add to list" disabled={addNewThingButtonDisabilityStatus}/>
+      </form>
+    </div>
+  )
+}
 
 
 const disableWhatToDoButton = (setWhatToDoButtonDisabledStatus) => {

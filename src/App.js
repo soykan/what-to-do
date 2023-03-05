@@ -58,7 +58,7 @@ const WhatToDo = () => {
 
   return (
     <div>
-      <ThingsToDo disabled={removeButtonForListItemDisabledStatus} />
+      <ThingsToDo removeButtonsDisabledStatus={removeButtonForListItemDisabledStatus} />
       <p>{currentToDo}</p>
       <button id="whatToDoButton" onClick={() => setAnimationStartStatus(true)} disabled={whatToDoButtonDisabledStatus}>
         What to Do
@@ -76,7 +76,7 @@ const ThingsToDo = (props) => {
             <div>
               <li>
                 {item + " "}
-                <button id="remoteButtonForListItem" disabled={props.disabled}>X</button>
+                <button id="remoteButtonForListItem" disabled={props.removeButtonsDisabledStatus}>X</button>
               </li>
             </div>
           );

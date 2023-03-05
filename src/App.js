@@ -67,8 +67,7 @@ const WhatToDo = () => {
   )
 }
 
-const ThingsToDo = (props) => {
-  return (
+const ThingsToDo = (props) =>  (
     <div>
       <ol>
         {thingsToDo.map((item) => {
@@ -83,8 +82,7 @@ const ThingsToDo = (props) => {
         })}
       </ol>
     </div>
-  )
-}
+)
 
 
 const disableWhatToDoButton = (setWhatToDoButtonDisabledStatus) => {

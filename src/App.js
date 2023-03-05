@@ -10,6 +10,7 @@ const App = () => {
   const initialText = "Click the button to delegate this decision to our program";
   const [currentToDo, setCurrentToDo] = React.useState(initialText);
   const [animationStartStatus, setAnimationStartStatus] = React.useState(false);
+  const [whatToDoButtonDisabledStatus, setWhatToDoButtonDisabledStatus] = React.useState(false);
 
   React.useEffect(() => {
     if (animationStartStatus) {
@@ -21,15 +22,19 @@ const App = () => {
           setCurrentToDo,
           setAnimationStartStatus
         }
-
+        
+        disableWhatToDoButton(setWhatToDoButtonDisabledStatus);
         startAnimation(animationObject);
 
       }, 1000);
 
-      return () => clearInterval(intervalId);
-
-    }
-  });
+    return () => {
+      clearInterval(intervalId);
+    }     
+  } else {
+    enableWhatToDoButton(setWhatToDoButtonDisabledStatus);
+  }
+  }, [animationStartStatus, currentToDo]);
 
   return (
     <div>
@@ -43,11 +48,21 @@ const App = () => {
       </ol>
 
       <p>{currentToDo}</p>
-      <button id="whatToDoButton" onClick={() => setAnimationStartStatus(true)}>What to Do</button>
+      <button id="whatToDoButton" onClick={() => setAnimationStartStatus(true)} disabled={whatToDoButtonDisabledStatus}>
+        What to Do
+      </button>
     </div> 
   ); 
 }
 
+const disableWhatToDoButton = (setWhatToDoButtonDisabledStatus) => {
+  setWhatToDoButtonDisabledStatus(true);
+}
+
+
+const enableWhatToDoButton = (setWhatToDoButtonDisabledStatus) => {
+  setWhatToDoButtonDisabledStatus(false);
+}
 
 const startAnimation = (animationObject) => {
   const {currentToDo, setCurrentToDo, setAnimationStartStatus} = animationObject;

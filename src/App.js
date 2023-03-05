@@ -6,7 +6,23 @@ let thingsToDo = ["Play a game!", "Watch a movie!",
 const ANIMATION_ITERATION_COUNT = 10;
 
 let animationIterationNumber = 0;
+
+
 const App = () => {
+  return (
+    <div>
+
+      <h1>What to Do App</h1>
+
+      <ThingsToDo />
+
+      <WhatToDo />
+
+    </div> 
+  ); 
+}
+
+const WhatToDo = () => {
   const initialText = "Click the button to delegate this decision to our program";
   const [currentToDo, setCurrentToDo] = React.useState(initialText);
   const [animationStartStatus, setAnimationStartStatus] = React.useState(false);
@@ -34,25 +50,23 @@ const App = () => {
   }
   }, [animationStartStatus, currentToDo]);
 
-
   return (
     <div>
-      <h1>What to Do App</h1>
-
-      <ol>
-        {thingsToDo.map((item) => {
-            return <li>{item}</li>;
-
-        })}
-      </ol>
-
       <p>{currentToDo}</p>
       <button id="whatToDoButton" onClick={() => setAnimationStartStatus(true)} disabled={whatToDoButtonDisabledStatus}>
         What to Do
       </button>
-    </div> 
-  ); 
+    </div>
+  )
 }
+
+const ThingsToDo = () => (
+  <ol>
+    {thingsToDo.map((item) => {
+      return <li>{item}</li>;
+    })}
+  </ol>
+)
 
 const disableWhatToDoButton = (setWhatToDoButtonDisabledStatus) => {
   setWhatToDoButtonDisabledStatus(true);

@@ -13,28 +13,27 @@ const App = () => {
   const [whatToDoButtonDisabledStatus, setWhatToDoButtonDisabledStatus] = React.useState(false);
 
   React.useEffect(() => {
+    let intervalId;
     if (animationStartStatus) {
-
-      const intervalId = setInterval(() => {
-
+      intervalId = setInterval(() => {
         const animationObject = {
           currentToDo,
           setCurrentToDo,
-          setAnimationStartStatus
+          setAnimationStartStatus,
+          setWhatToDoButtonDisabledStatus
         }
-        
-        disableWhatToDoButton(setWhatToDoButtonDisabledStatus);
         startAnimation(animationObject);
-
       }, 1000);
-
     return () => {
-      clearInterval(intervalId);
+      if (intervalId !== undefined) {
+        clearInterval(intervalId);
+      }
     }     
   } else {
     enableWhatToDoButton(setWhatToDoButtonDisabledStatus);
   }
   }, [animationStartStatus, currentToDo]);
+
 
   return (
     <div>
@@ -65,6 +64,7 @@ const enableWhatToDoButton = (setWhatToDoButtonDisabledStatus) => {
 }
 
 const startAnimation = (animationObject) => {
+  disableWhatToDoButton(animationObject.setWhatToDoButtonDisabledStatus);
   const {currentToDo, setCurrentToDo, setAnimationStartStatus} = animationObject;
   animationIterationNumber++;
   if (animationIterationNumber === ANIMATION_ITERATION_COUNT) {

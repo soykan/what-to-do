@@ -1,4 +1,7 @@
 import * as React from 'react';
+import "./bootstrap/bootstrap.min.css";
+import "./App.css";
+
 
 let thingsToDo = ["Play a game!", "Watch a movie!", 
                   "Read a book!", "Take a walk!"];
@@ -12,14 +15,8 @@ let animationIterationNumber = 0;
 const App = () => {
   return (
     <div>
-
-      <h1>What to Do App</h1>
-
       <WhatToDo />
-
-      <br/>
-
-    </div> 
+    </div>
   ); 
 }
 
@@ -58,14 +55,26 @@ const WhatToDo = () => {
   }, [animationStartStatus, currentToDo]);
 
 
-
   return (
-    <div>
-      <ThingsToDo removeButtonsDisabledStatus={removeButtonForListItemDisabledStatus} animationStatus={animationStartStatus} />
-      <p>{currentToDo}</p>
-      <button id="whatToDoButton" onClick={() => setAnimationStartStatus(true)} disabled={whatToDoButtonDisabledStatus}>
-        What to Do
-      </button>
+    
+    <div class="container ">
+      <br/><br/><br/><br/>
+      <div class="row align-items-start">
+        <div class="col"></div>
+        <div class="col">
+          <ThingsToDo removeButtonsDisabledStatus={removeButtonForListItemDisabledStatus} animationStatus={animationStartStatus} />
+        </div>
+        <div class="col text-center">
+          <h1>What to Do App</h1>
+          <br/>
+          <button id="whatToDoButton" className="btn btn-primary" onClick={() => setAnimationStartStatus(true)} disabled={whatToDoButtonDisabledStatus}>    
+            What to Do
+          </button> 
+          <br/><br/>
+          <p>{currentToDo}</p>
+        </div>
+        <div class="col"></div>
+      </div>
     </div>
   )
 }
@@ -82,20 +91,22 @@ const ThingsToDo = (props) => {
 
   return  (
     <div>
-      <ol>
-        {thingsToDo.map((item) => {
+      <ul className="list-group list-group-numbered">
+        <h3>To Do List</h3>
+        <hr/>
+        {thingsToDo.map((item, index) => {
           return (
             <div>
-              <li>
-                {item + " "}
-                <button id="removeButtonForListItem" disabled={props.removeButtonsDisabledStatus} onClick={() => removeThingToDo(item)}>
+              <li className="list-group-item">
+                {(index + 1)+ ". " + item + " "}
+                <button id="removeButtonForListItem" className="btn btn-danger btn-sm" disabled={props.removeButtonsDisabledStatus} onClick={() => removeThingToDo(item)}>
                   X
                 </button>
               </li>
             </div>
           );
         })}
-      </ol>
+      </ul>
       <br/>
       <NewThingsForm addThingToThingsToDoArray={setThingsToDoArray} animationStatus={props.animationStatus} />
     </div>
@@ -108,8 +119,10 @@ const NewThingsForm = (props) => {
   const handleSubmit = (event) => {
     const newThingToDo = event.target.newThing.value;
     event.preventDefault();
-    thingsToDo.push(newThingToDo);
-    props.addThingToThingsToDoArray(newThingToDo);
+    if ((!thingsToDo.includes(newThingToDo)) && (newThingToDo !== "")) {   
+      thingsToDo.push(newThingToDo);
+      props.addThingToThingsToDoArray(newThingToDo);
+    }
   }
 
   React.useEffect(() => {
@@ -123,8 +136,9 @@ const NewThingsForm = (props) => {
   return (
     <div>
       <form onSubmit={handleSubmit}>  
-        <input type="text" name="newThing" placeholder="ToDo" />
-        <input type="submit" id="addNewThingButton" value="Add to list" disabled={addNewThingButtonDisabilityStatus}/>
+        <input type="text" name="newThing" placeholder="ToDo" className="form-control" />
+        <br/>
+        <input type="submit" id="addNewThingButton" value="Add to list" className="form-control btn btn-success" disabled={addNewThingButtonDisabilityStatus}/>
       </form>
     </div>
   )

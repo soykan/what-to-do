@@ -1,3 +1,5 @@
 # what to do app with react
 
-> ![](app-screenshot.png)
+<kbd>
+![](app-screenshot.png)
+</kbd>

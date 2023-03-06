@@ -11,7 +11,6 @@ const ANIMATION_ITERATION_COUNT = 10;
 let animationIterationNumber = 0;
 
 
-
 const App = () => {
   return (
     <div>
@@ -19,6 +18,7 @@ const App = () => {
     </div>
   ); 
 }
+
 
 const WhatToDo = () => {
   const initialText = "Click the button to delegate this decision to our program";
@@ -79,6 +79,7 @@ const WhatToDo = () => {
   )
 }
 
+
 const ThingsToDo = (props) => {
   const [thingsToDoArray, setThingsToDoArray] = React.useState(thingsToDo);
 
@@ -112,6 +113,8 @@ const ThingsToDo = (props) => {
     </div>
   );
 }
+
+
 const NewThingsForm = (props) => {
 
   const [addNewThingButtonDisabilityStatus, setAddNewThingButtonDisabilityStatus] = React.useState(false);

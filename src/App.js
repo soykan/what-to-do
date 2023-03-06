@@ -119,7 +119,7 @@ const NewThingsForm = (props) => {
   const handleSubmit = (event) => {
     const newThingToDo = event.target.newThing.value;
     event.preventDefault();
-    if ((!thingsToDo.includes(newThingToDo)) && (newThingToDo !== "")) {   
+    if ((!thingsToDo.includes(newThingToDo)) && (newThingToDo.trim() !== "")) {   
       thingsToDo.push(newThingToDo);
       props.addThingToThingsToDoArray(newThingToDo);
     }
